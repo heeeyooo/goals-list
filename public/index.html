@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Web site created using create-snowpack-app" />
+  <title>Goals list</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Comfortaa", serif;
+
+    }
+
+    body {
+      background: #000;
+      color: #000;
+      padding: 100px 15px;
+      text-align: center;
+    }
+
+    .main {
+      background-color: #fff;
+      border-radius: 50px;
+      padding: 0 5px 50px;
+    }
+
+    .title {
+      font-size: clamp(30px, 5vw, 56px);
+      padding: 25px 0;
+    }
+
+    form {
+      display: flex;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+    }
+
+    form:focus-within {
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    form input {
+      flex-grow: 1;
+      border: none;
+      background: transparent;
+      padding: 15px 10px;
+      color: #000;
+      font-size: 16px;
+    }
+
+    form input:focus {
+      outline: none;
+
+    }
+
+    form button {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 0 10px 10px 0;
+      border: none;
+      color: #000;
+      width: 100px;
+      cursor: pointer;
+    }
+
+    #list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin: 10px 0;
+      padding-left: 15px;
+      border-radius: 10px;
+      transition: all 300ms;
+    }
+
+    .item--completed {
+      background-color: rgba(84, 234, 142, 0.5) !important;
+    }
+
+    .item--not-completed {
+      background-color: rgba(233, 61, 61, 0.49) !important;
+    }
+
+    .span-text {
+      width: calc(100% - 100px);
+      word-wrap: break-word;
+      text-align: left;
+    }
+
+    .checkbox-container {
+      width: 100px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    .label,
+    .label-x {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .checkbox,
+    .checkbox-x {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .custom-check {
+      display: inline-block;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      /* box-shadow: inset 2px 2px rgb(0, 255, 0), inset -2px -2px rgb(0, 255, 0); */
+      transition: all 300ms;
+      background-image: url('img/check.png');
+      background-repeat: no-repeat;
+      background-size: 50%;
+      background-position: center;
+    }
+
+    .custom-check-x {
+      display: inline-block;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      /* box-shadow: inset 2px 2px rgb(255, 0, 0), inset -2px -2px rgb(255, 0, 0); */
+      transition: all 300ms;
+      background-image: url('img/close.png');
+      background-repeat: no-repeat;
+      background-size: 50%;
+      background-position: center;
+    }
+
+    /* .custom-check::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-image: url("../check.svg");
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin-top: 1px;
+      transition: all 0.2s ease-in;
+    } */
+
+    /* .checkbox:checked+.custom-check {
+      box-shadow: inset 20px 20px rgb(0, 255, 0), inset -20px -20px rgb(0, 255, 0);
+    } */
+
+    /* .checkbox-x:checked+.custom-check-x {
+      box-shadow: inset 20px 20px rgb(255, 0, 0), inset -20px -20px rgb(255, 0, 0);
+
+    } */
+  </style>
+</head>
+
+<body>
+  <main class="main">
+    <h1 class="title">Goals List</h1>
+    <form action="" id="new-task-form">
+      <input type="text" id="new-task-title">
+      <button type="submit">Add</button>
+    </form>
+    <ul id="list"></ul>
+  </main>
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <script type="module" src="/dist/index.js"></script>
+</body>
+
+</html>
