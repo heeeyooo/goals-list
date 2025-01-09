@@ -1,12 +1,18 @@
-import { v4 as uuidV4 } from "uuid";
+// import { v4 as uuidV4 } from "uuid";
+import dayjs from "dayjs";
+
+const today = dayjs();
+
+const formatDate = today.format("D/M/YY");
+
+console.log(typeof formatDate);
 
 type Task = {
-    slice(index: any, arg1: number): unknown;
-    id: string;
+    // id: string;
     title: string;
     completed: boolean;
     notCompleted: boolean;
-    createdAt: Date;
+    createdAt: string;
 };
 
 const list = document.querySelector<HTMLUListElement>("#list");
@@ -15,138 +21,114 @@ const input = document.querySelector<HTMLInputElement>("#new-task-title");
 
 let tasks: Task[] = loadTasks();
 
-tasks.forEach(addListItem);
-
-// tasks.forEach((task) => {
-//     addListItem(task);
-// });
-
-form?.addEventListener("submit", () => {
-    // e.preventDefault();
+form?.addEventListener("submit", (e) => {
+    e.preventDefault();
 
     if (input?.value == "" || input?.value == null) return;
 
     const newTask: Task = {
-        id: uuidV4(),
+        // id: uuidV4(),
         title: input.value,
         completed: false,
         notCompleted: false,
-        createdAt: new Date(),
-        slice: function (index: any, arg1: number): unknown {
-            throw new Error("Function not implemented.");
-        },
+        createdAt: formatDate,
     };
     tasks.unshift(newTask);
     saveTasks();
 
-    addListItem(newTask);
+    renderData();
+    // addListItem(newTask);
 
     input.value = "";
 });
-function addListItem(task: Task) {
-    const item = document.createElement("li");
-    const checkbox = document.createElement("input");
-    const checkboxX = document.createElement("input");
-    const div = document.createElement("div");
-    const label = document.createElement("label");
-    const labelX = document.createElement("label");
-    const span = document.createElement("span");
-    const spanX = document.createElement("span");
-    item.classList.add("item");
-    checkbox.classList.add("checkbox");
-    checkboxX.classList.add("checkbox-x");
 
-    function refreshColor() {
-        tasks.forEach((task) => {
-            if (task.notCompleted) {
-                item.classList.add("item--not-completed");
-            } else if (task.completed) {
-                item.classList.add("item--completed");
-            } else if (!task.notCompleted && !task.completed) {
-                item.classList.remove("item--not-completed");
-                item.classList.remove("item--completed");
+function renderData() {
+    let listHTML = "";
+
+    tasks.forEach((taskItem) => {
+        const { title, completed, notCompleted, createdAt } = taskItem;
+        let HTML = `
+<li class="item"><span class="span-text">${title}</span>
+<span class="created-at">${createdAt}</span>
+<div class="checkbox-container">
+<label class="label"><input class="checkbox" type="checkbox" ${
+            completed == true ? "checked" : ""
+        }"><span class="custom-check"></span></label>
+<label class="label-x"><input class="checkbox-x" type="checkbox" ${
+            notCompleted == true ? "checked" : ""
+        }"><span class="custom-check-x"></span></label>
+</div>
+</li>
+    `;
+        listHTML += HTML;
+    });
+
+    list!.innerHTML = listHTML;
+
+    document
+        .querySelectorAll<HTMLInputElement>(".checkbox")
+        .forEach((el, index) => {
+            el.addEventListener("change", () => {
+                tasks[index].notCompleted = false;
+                el.closest(".item")?.classList.remove("item--not-completed");
+
+                if (!tasks[index].completed) {
+                    tasks[index].completed = el.checked;
+
+                    el.closest(".item")?.classList.add("item--completed");
+                } else {
+                    tasks[index].completed = el.checked;
+
+                    el.closest(".item")?.classList.remove("item--completed");
+                }
+                saveTasks();
+            });
+        });
+
+    document
+        .querySelectorAll<HTMLInputElement>(".checkbox-x")
+        .forEach((el, index) => {
+            el.addEventListener("change", () => {
+                tasks[index].completed = false;
+                el.closest(".item")?.classList.remove("item--completed");
+
+                if (!tasks[index].notCompleted) {
+                    tasks[index].notCompleted = el.checked;
+
+                    el.closest(".item")?.classList.add("item--not-completed");
+                } else {
+                    tasks[index].notCompleted = el.checked;
+
+                    el.closest(".item")?.classList.remove(
+                        "item--not-completed"
+                    );
+                }
+                saveTasks();
+            });
+        });
+
+    document
+        .querySelectorAll<HTMLInputElement>(".checkbox")
+        .forEach((el, index) => {
+            if (tasks[index].completed) {
+                el.closest(".item")?.classList.add("item--completed");
+            } else {
+                el.closest(".item")?.classList.remove("item--completed");
             }
         });
-    }
 
-    refreshColor();
-
-    // checkbox.addEventListener('click', () => {
-    //         const target: EventTarget | null = event.target;
-    //         const outer: HTMLLIElement | null = target?.closest(".item");
-    //         outer?.remove();
-    //         saveTasks();
-    // })
-
-    span.classList.add("custom-check");
-    spanX.classList.add("custom-check-x");
-
-    const spanText = document.createElement("span");
-
-    spanText.classList.add("span-text");
-
-    div.classList.add("checkbox-container");
-
-    label.classList.add("label");
-    labelX.classList.add("label-x");
-
-    // removeBtn.addEventListener("click", (event) => {
-    //     const target: EventTarget | null = event.target;
-    //     const outer: HTMLLIElement | null = target?.closest(".item");
-    //     outer?.remove();
-    //     saveTasks();
-    // });
-
-    // document.querySelectorAll(".remove-btn").forEach((btn, index) => {
-    //     btn.addEventListener("click", () => {
-    //         tasks.splice(index, 1);
-    //         saveTasks();
-    //         console.log("hello");
-    //     });
-    // });
-
-    document.querySelectorAll(".checkbox").forEach((check) => {
-        check.addEventListener("change", () => {
-            task.completed = check.checked;
-            saveTasks();
-            refreshColor();
+    document
+        .querySelectorAll<HTMLInputElement>(".checkbox-x")
+        .forEach((el, index) => {
+            if (tasks[index].notCompleted) {
+                el.closest(".item")?.classList.add("item--not-completed");
+            } else {
+                el.closest(".item")?.classList.remove("item--not-completed");
+            }
         });
-    });
-
-    // checkbox.addEventListener("change", () => {
-    //     // tasks.forEach((task) => {
-    //     //     if (task.completed) {
-    //     //         item.classList.remove("item--not-completed");
-    //     //     } else {
-    //     //         item.classList.remove("item--completed");
-    //     //     }
-    //     // });
-    //     task.completed = checkbox.checked;
-    //     saveTasks();
-    //     refreshColor();
-    // });
-    checkboxX.addEventListener("change", () => {
-        // tasks.forEach((task) => {
-        //     if (task.notCompleted) {
-        //     }
-        // });
-
-        task.notCompleted = checkboxX.checked;
-
-        saveTasks();
-        refreshColor();
-    });
-    checkbox.type = "checkbox";
-    checkboxX.type = "checkbox";
-    label.append(checkbox, span);
-    labelX.append(checkboxX, spanX);
-    checkbox.checked = task.completed;
-    checkboxX.checked = task.notCompleted;
-    div.append(label, labelX);
-    spanText.append(task.title);
-    item.append(spanText, div);
-    list?.append(item);
 }
+
+renderData();
 
 function saveTasks() {
     localStorage.setItem("TASKS", JSON.stringify(tasks));

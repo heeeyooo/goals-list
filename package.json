@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.2.0",
+    "dayjs": "^1.11.13",
     "uuid": "^11.0.4"
   },
   "devDependencies": {

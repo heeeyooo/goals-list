@@ -7,13 +7,13 @@
   <meta name="description" content="Web site created using create-snowpack-app" />
   <title>Goals list</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
     * {
       padding: 0;
       margin: 0;
       box-sizing: border-box;
-      font-family: "Comfortaa", serif;
+      font-family: "Roboto", serif;
 
     }
 
@@ -85,17 +85,22 @@
     }
 
     .item--completed {
-      background-color: rgba(84, 234, 142, 0.5) !important;
+      background-color: rgba(84, 234, 142, 0.3) !important;
     }
 
     .item--not-completed {
-      background-color: rgba(233, 61, 61, 0.49) !important;
+      background-color: rgba(255, 69, 13, 0.3) !important;
     }
 
     .span-text {
       width: calc(100% - 100px);
       word-wrap: break-word;
       text-align: left;
+    }
+
+    .created-at {
+      opacity: 0.5;
+      font-size: 900;
     }
 
     .checkbox-container {
@@ -183,7 +188,6 @@
     </form>
     <ul id="list"></ul>
   </main>
-
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <script type="module" src="/dist/index.js"></script>
 </body>
